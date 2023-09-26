@@ -1,5 +1,6 @@
 <?php
 //Connecting to the database
+$insert = false;
 
 $servername = "localhost";
 $username = "root";
@@ -20,22 +21,20 @@ if (!$conn){
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $title = $_POST['title'];
     $description = $_POST['description'];
+
+    //Add a new trip to table
     $sql = "INSERT INTO `notes` (`title`, `description`) VALUES ('$title', '$description')";
     $result = mysqli_query($conn, $sql);
 
-    //Add a new trip to the Trip table
     if($result){
-      //echo "The record has been inserted successfully";
-      echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>Success!</strong> Your email '. $title.' and password ' .$description.' submitted successfully.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>';
+      //echo "The record has been submitted successfully.";
+      $insert = true;
     }
     else{
-      echo "The record has not been inserted successfully because of this error--> ". mysqli_error($conn);
+      echo "The record was not inserted successfully because of this error -->" . 
+      mysqli_error($conn);
     }
-
-    
+ 
 }
 ?>
 
@@ -77,6 +76,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     </form>
   </div>
 </nav>
+
+<?php
+if($insert){
+  echo "<div class='alert alert-success alert-dismissible fade show' role='alert'>
+  <strong>Success!</strong> Your note has been inserted successfully.
+  <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'>
+  <span aria-hidden='true'>&times;</span>
+  </button>
+</div>";
+}
+?>
 
 <div class="container my-4">
   <h2>Add a Note</h2>
