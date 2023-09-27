@@ -47,7 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    
+    
     <title>iNotes - Notes taking made easy</title>
   </head>
   <body>
@@ -103,10 +105,10 @@ if($insert){
   </form>
 </div>
 
-<div class="container">
+<div class="container" my-4>
 
 
-<table class="table">
+<table class="table" id="myTable">
   <thead>
     <tr>
       <th scope="col">S.No.</th>
@@ -119,13 +121,16 @@ if($insert){
   <?php
     $sql = "SELECT * FROM `notes`";
     $result = mysqli_query($conn, $sql);
+    $sno = 1;
     while($row = mysqli_fetch_assoc($result)){
+      
       echo"<tr>
-      <th scope='row'>".$row['sno']."</th>
+      <th scope='row'>". $sno ."</th>
         <td>".$row['title']."</td>
         <td>".$row['description']."</td>
         <td>Actions</td>
       </tr>";
+      $sno = $sno+1;
     }
 
     //$sql = "INSERT INTO `notes` (`sno`, `title`, `description`, `tstamp`) VALUES ('1', 'go to buy fruits', 'Hey Preeti\r\nI want to buy fruits. Delete this note once you are done.', current_timestamp())";
@@ -135,11 +140,16 @@ if($insert){
   </tbody>
 </table>
 </div>
-
+<hr>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script>
+      let table = new DataTable('#myTable');
+    </script>
   </body>
 </html>
