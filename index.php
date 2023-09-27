@@ -51,8 +51,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     
     
     <title>iNotes - Notes taking made easy</title>
+    
   </head>
   <body>
+    <!-- Edit modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">
+      Edit Modal
+    </button>
+
+    <!--Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="editModalLabel">Edit this Note</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="/crud/index.php" method="post">
+              <div class="form-group">
+                <label for="title">Note Title</label>
+                <input type="text" class="form-control" id="titleEdit" name="titleEdit" aria-describedby="emailHelp">
+              </div>    
+              <div class="form-group">
+                <label for="description">Note Description</label>
+                <textarea class="form-control" id="descriptionEdit" name="descriptionEdit" rows="3"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Add Note</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+</div>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="#">iNotes</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -128,7 +162,8 @@ if($insert){
       <th scope='row'>". $sno ."</th>
         <td>".$row['title']."</td>
         <td>".$row['description']."</td>
-        <td>Actions</td>
+        <td><button class='edit btn btn-sm btn-primary'>Edit</button> <a href='/del'>Delete</a></td>
+        
       </tr>";
       $sno = $sno+1;
     }
@@ -150,6 +185,21 @@ if($insert){
     <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script>
       let table = new DataTable('#myTable');
+    </script>
+    <script>
+      edits = document.getElementsByClassName('edit');
+      Array.from(edits).forEach((element)=>{
+        element.addEventListener("click",(e)=>{
+          console.log("edit", );
+          tr = e.target.parentNode.parentNode;
+          title = tr.getElementsByTagName("td")[0].innerText;
+          description = tr.getElementsByTagName("td")[1].innerText;
+          console.log(title, description);
+          titleEdit.value = title;
+          descriptionEdit.value = description;
+          $('#editModal').modal('toggle');
+        })
+      })
     </script>
   </body>
 </html>
